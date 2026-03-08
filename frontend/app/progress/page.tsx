@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo, useRef, useState, useEffect } from "react";
+import React, { Suspense, useMemo, useRef, useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import SiteHeader from "@/components/SiteHeader";
 
@@ -61,7 +61,7 @@ type SelectedToken = {
   uri?: string | null;
 };
 
-export default function ProgressPage() {
+function ProgressPageInner() {
   const searchParams = useSearchParams();
 
   const [wallet, setWallet] = useState(DEFAULT_WALLET);
@@ -102,6 +102,44 @@ export default function ProgressPage() {
       // ignore
     }
   }
+
+  export default function ProgressPage() {
+  return (
+    <Suspense
+      fallback={
+        <div
+          style={{
+            minHeight: "100vh",
+            background:
+              "radial-gradient(circle at top, rgba(120,102,213,0.18), transparent 28%), #070707",
+            color: "#eaeaea",
+            padding: 24,
+            fontFamily:
+              'ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji"',
+          }}
+        >
+          <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+            <SiteHeader />
+            <div
+              style={{
+                border: "1px solid rgba(255,255,255,0.18)",
+                borderRadius: 12,
+                padding: 16,
+                background: "rgba(0,0,0,0.55)",
+                marginTop: 16,
+                color: "rgba(255,255,255,0.72)",
+              }}
+            >
+              Loading progress page...
+            </div>
+          </div>
+        </div>
+      }
+    >
+      <ProgressPageInner />
+    </Suspense>
+  );
+}
 
   function saveForceRefreshUntil(ts: number) {
     try {
