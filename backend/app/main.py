@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from app.database import engine, Base
 # Routers
 from app.routes.progress import router as progress_router
 from app.routes.tokens import router as tokens_router
@@ -29,6 +30,10 @@ app.include_router(tokens_router)
 app.include_router(collections_router)
 app.include_router(wallet_router)
 
+@app.on_event("startup")
+async def startup():
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.create_all)
 
 @app.get("/health")
 async def health():
