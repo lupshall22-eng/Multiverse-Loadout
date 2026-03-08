@@ -16,7 +16,8 @@ app = FastAPI(
 # CORS for local dev (frontend on localhost:3000)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # change to ["http://localhost:3000"] later if you want tighter security
+    allow_origins=["http://localhost:3000",
+        "https://multiverse-loadout.vercel.app"],  # change to ["http://localhost:3000"] later if you want tighter security
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
